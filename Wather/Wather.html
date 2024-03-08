@@ -1,0 +1,91 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./Wather.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="card">
+        <div class="serch">
+            <input type="text" placeholder="ENTER YOUR CITY NAME" spellcheck="false">
+            <button><img src=".././images/search.png" alt=""></button>
+        </div>
+        <div class="error">
+            <p>Inalid your City Name</p>
+        </div>
+        <div class="weather">
+            <img class="wether-icon" src="../images/rain.png" alt="">
+            <h1 class="temps">22°C</h1>
+            <h2 class="city">New York</h2>
+           <div class="deatils">
+            <div class="col">
+                <img src="../images/humidity.png" alt=""> 
+                <div>
+                    <p class="humidity">50%</p>
+                    <p>humidty</p>
+                </div>
+             </div>
+            
+             <div class="col">
+                <img src="../images/wind.png" alt="">
+                <div>
+                    <p class="wind">15 km/h</p>
+                    
+                    <p>wind speed</p>
+                </div> 
+             </div>
+            
+           </div>
+        </div>
+
+    </div>
+    <script>
+
+
+const serchbox=document.querySelector('.serch input');
+const serchbutton=document.querySelector('.serch button');
+const wethericon=document.querySelector('.wether-icon')
+
+
+
+        const apikey='8371c4a06236b1e5bddb39dcd776f3a8'
+        const apiurl='https://api.openweathermap.org/data/2.5/weather?units=metric&q='
+
+    async function wetherdata(city){
+        const respons=await fetch(apiurl + city +`&appid=${apikey}`)
+        if(respons.status==404){
+document.querySelector('.error').style.display='block'
+document.querySelector('.weather').style.display='none';
+
+        }
+        else {
+            const data=await respons.json()
+        console.log(data)
+        document.querySelector('.temps').innerHTML=Math.round(data.main.temp )+'°C'
+        document.querySelector('.city').innerHTML=data.name
+        document.querySelector('.wind').innerHTML=data.wind.speed + 'km/h'
+        document.querySelector('.humidity').innerHTML=data.main.humidity +'%'
+        if(data.weather[0].main=='Clouds'){
+            wethericon.src='../images/clouds.png'
+        }
+        else if(data.weather[0].main=='Rain'){
+            wethericon.src='../images/rain.png'
+        }
+        else if(data.weather[0].main=='Clear'){
+            wethericon.src='../images/clear.png'
+        }
+        else if(data.weather[0].main=='Haze'){
+            wethericon.src='../images'
+        }
+        document.querySelector('.weather').style.display='block';
+        document.querySelector('.error').style.display='none'
+        }
+    }
+    serchbutton.addEventListener('click',()=>{
+        wetherdata(serchbox.value)
+    })
+    
+    </script>
+</body>
+</html>
